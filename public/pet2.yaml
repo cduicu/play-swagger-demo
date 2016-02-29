@@ -1,0 +1,187 @@
+swagger: '2.0'
+#host: tbd
+basePath: /store2
+schemes:
+  - http
+consumes:
+  - application/xml
+  - application/json
+produces:
+  - text/plain
+  - application/json
+  - application/xml
+
+info:
+  title: Pet Store REST API
+  version: "1.0.0"
+  description: Sample REST API. Some may consider the results returned by this version to be more friendly.
+  termsOfService: No restrisctions
+  contact:
+    name: Cristian Duicu
+    url: https://github.com/cduicu
+
+paths:
+  /:
+    get:
+      description: Check if server is alive (ping operation)
+      operationId: ping
+      tags:
+        - Operational
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: string
+          examples:
+              text/plain:
+                Server is up! Request time: Fri Feb 26 16:54:08 EST 2016
+
+  /petList:
+    get:
+      description: Show list of pets in the store
+      operationId: Store.petList
+      produces:
+        - application/json
+      tags:
+         - Query
+      responses:
+        200:
+          description: List of pets in the store
+          schema:
+            $ref: '#/definitions/Pet'
+
+  /pet/{petName}:
+    get:
+      description: Get pet by name
+      operationId: Store.getPet
+      produces:
+        - application/json
+      parameters:
+        - name: petName
+          in: path
+          required: true
+          type: string
+          description: name of the pet you're looking for
+      tags:
+        - Query
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Reponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Reponse'
+        500:
+          description: Pet not found
+          schema:
+            $ref: '#/definitions/Reponse'
+    delete:
+      description: Delete a pet from the store
+      operationId: OMRest.deletePet
+      produces:
+        - application/json
+      parameters:
+        - name: petName
+          in: path
+          required: true
+          type: string
+          description: the name of the pet to delete
+      tags:
+        - Write
+      responses:
+        200:
+          description: Pet deleted from store. If not found error is provided
+          schema:
+            $ref: '#/definitions/Reponse'
+        400:
+          description: Badly formatted body or failed to authenticate
+          schema:
+            $ref: '#/definitions/Reponse'
+
+  /pet:
+    post:
+      description: updates a pet in the store
+      operationId: OMRest.updatePet
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: pet
+          in: body
+          required: true
+          description: the pet in JSON format
+          schema:
+            $ref: '#/definitions/Pet'
+      tags:
+        - Write
+      responses:
+        200:
+          description: Pet updated in store
+          schema:
+            $ref: '#/definitions/Reponse'
+        400:
+          description: Badly formatted body or failed to authenticate
+          schema:
+            $ref: '#/definitions/Reponse'
+        500:
+          description: Pet not found in store
+          schema:
+            $ref: '#/definitions/Reponse'
+    put:
+      description: adds a pet in the store
+      operationId: OMRest.putPet
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: pet
+          in: body
+          required: true
+          description: the pet in JSON format
+          schema:
+            $ref: '#/definitions/Pet'
+      tags:
+        - Write
+      responses:
+        200:
+          description: Pet added to store
+          schema:
+            $ref: '#/definitions/Reponse'
+        400:
+          description: Badly formatted body or failed to authenticate
+          schema:
+            $ref: '#/definitions/Reponse'
+        500:
+          description: Pet already in store
+          schema:
+            $ref: '#/definitions/Reponse'
+
+###################################################################
+## Models
+###################################################################
+
+definitions:
+  Pet:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      age:
+        type: string
+      gender:
+        type: string
+  Reponse:
+    type: object
+    required:
+      - result
+    properties:
+      result:
+        type: string
+      message:
+        type: string

@@ -1,0 +1,29 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                        controllers.Application.index
+
+# HTTP Status Code responses
+GET           /pet/:name               controllers.StoreController.pet(name)
+POST          /pet                     controllers.StoreController.updatePet
+PUT           /pet                     controllers.StoreController.putPet
+DELETE        /pet/:name               controllers.StoreController.deletePet(name)
+GET           /petList                 controllers.StoreController.petList
+
+# JSON Response
+GET           /store2/pet/:name        controllers.StoreController2.pet(name)
+POST          /store2/pet              controllers.StoreController2.updatePet
+PUT           /store2/pet              controllers.StoreController2.putPet
+DELETE        /store2/pet/:name        controllers.StoreController2.deletePet(name)
+GET           /store2/petList          controllers.StoreController2.petList
+
+
+# Swagger UI routes
+GET           /storeDocs               controllers.Application.apiDocs
+GET           /storeDocs2              controllers.Application.apiDocs2
+GET           /apidocs/*file           controllers.Assets.at(path:String="/public/lib/swagger-ui", file:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)
